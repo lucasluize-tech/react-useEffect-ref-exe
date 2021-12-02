@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Deck from "./Deck";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const newDeck = function () {
+    axios
+      .get(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`)
+      .then((res) => setDeck(res.data))
+      .catch((err) => console.error(err));
+  };
+  const [deck, setDeck] = useState(null);
+
+  useEffect(() => {
+    newDeck();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Deck deck={deck} Reload={() => setDeck(newDeck())} />
     </div>
   );
 }
